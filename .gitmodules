@@ -1,0 +1,3 @@
+[submodule "fetch_ws/src/fetch_gazebo"]
+	path = fetch_ws/src/fetch_gazebo
+	url = https://github.com/ZebraDevs/fetch_gazebo.git

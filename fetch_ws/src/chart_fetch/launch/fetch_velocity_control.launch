@@ -1,0 +1,16 @@
+
+<launch>
+
+  <!-- Start MoveIt -->
+  <include file="$(find fetch_moveit_config)/launch/move_group.launch" >
+    <arg name="info" value="true"/><!-- publish grasp markers -->
+  </include>
+    <!-- Launch simulated bumbleball -->
+    <node name="sim_bumbleball" pkg="chart_lab" type="sim_bumbleball.py" output="screen" />
+    <node name="sim_fetch" pkg="chart_lab" type="sim_fetch.py" output="screen" />
+
+  <!-- Drive to the table, pick stuff up -->
+  <node name="fetch_velocity_control" pkg="chart_fetch" type="fetch_velocity_control.py" output="screen" />
+
+
+</launch>

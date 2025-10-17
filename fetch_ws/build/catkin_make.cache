@@ -1,0 +1,2 @@
+chart_lab:fetch_gazebo/fetch_gazebo:fetch_gazebo/fetch_gazebo_demo:fetch_gazebo/fetch_simulation:fetch_gazebo/fetchit_challenge
+-DCATKIN_DEVEL_PREFIX=/home/fetchuser/fetch_ws/devel -DCMAKE_INSTALL_PREFIX=/home/fetchuser/fetch_ws/install -G Unix Makefiles

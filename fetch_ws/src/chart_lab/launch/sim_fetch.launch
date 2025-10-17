@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="chart_lab" name="sim_fetch.py" type="sim_fetch.py" output="screen"> </node>
+</launch>

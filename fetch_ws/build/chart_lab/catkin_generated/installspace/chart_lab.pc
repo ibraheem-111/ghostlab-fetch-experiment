@@ -1,0 +1,8 @@
+prefix=/home/fetchuser/fetch_ws/install
+
+Name: chart_lab
+Description: Description of chart_lab
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

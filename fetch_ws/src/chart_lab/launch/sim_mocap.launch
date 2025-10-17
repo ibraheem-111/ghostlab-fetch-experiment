@@ -1,0 +1,6 @@
+<launch>
+  <node pkg="chart_lab" name="sim_mocap.py" type="sim_mocap.py" output="screen"> </node>
+    <!-- <node name="listener_node" pkg="chart_lab" type="sim_mocap.py" output="screen"></node> -->
+  <!-- <node name="listener_node" pkg="hello_world" type="listener" output="screen"/>
+  <node name="talker_node" pkg="hello_world" type="talker" output="screen"/> -->
+</launch>

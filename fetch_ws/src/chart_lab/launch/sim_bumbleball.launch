@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="chart_lab" name="sim_bumbleball.py" type="sim_bumbleball.py" output="screen"> </node>
+</launch>
