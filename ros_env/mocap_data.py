@@ -38,12 +38,13 @@ def save_to_csv():
     rospy.loginfo("Saved %d entries to pose_data.csv", len(data_list))
     rospy.loginfo("Exiting gracefully.")
 
-def listener():
+def listener(ros_topic):
     rospy.init_node('pose_collector', anonymous=True)
-    rospy.Subscriber("/vrpn_client_node/FetchMobile/pose", PoseStamped, callback)
+    rospy.Subscriber(ros_topic, PoseStamped, callback)
     rospy.on_shutdown(save_to_csv)
-    rospy.loginfo("Listening to /vrpn_client_node/FetchMobile/pose ... Press Ctrl+C to stop.")
+    rospy.loginfo("Listening to {} ... Press Ctrl+C to stop.".format(ros_topic))
     rospy.spin()
 
 if __name__ == '__main__':
+    topic = "/vrpn_client_node/FetchMobile/pose"
     listener()
