@@ -2,10 +2,12 @@ import rospy
 import csv
 import tf
 from geometry_msgs.msg import PoseStamped
+import time
 
 data_list = []
 
 def callback(msg):
+    stamp = msg.header.stamp
     pose = msg.pose
 
     quaternion = (
@@ -16,6 +18,8 @@ def callback(msg):
     )
     euler = tf.transformations.euler_from_quaternion(quaternion)
     alpha, beta, gamma = euler
+    
+    time = stamp.secs
 
     data = {
         "x": pose.position.x,
@@ -23,7 +27,8 @@ def callback(msg):
         "z": pose.position.z,
         "alpha": alpha,
         "beta": beta,
-        "gamma": gamma
+        "gamma": gamma,
+        "time": time
     }
 
     data_list.append(data)
@@ -31,9 +36,10 @@ def callback(msg):
 
 def save_to_csv():
     rospy.loginfo("Saving data to CSV...")
-    file_name = "pose_data_movement_50Hz.csv"
+    current_time = time.time()
+    file_name = "pose_data_movement_50Hz" + str(current_time) + ".csv"
     with open(file_name, "w") as f:
-        writer = csv.DictWriter(f, fieldnames=["x", "y", "z", "alpha", "beta", "gamma"])
+        writer = csv.DictWriter(f, fieldnames=["x", "y", "z", "alpha", "beta", "gamma", "time"])
         writer.writeheader()
         writer.writerows(data_list)
     rospy.loginfo("Saved {} entries to {}".format(str(len(data_list)), file_name))
@@ -47,5 +53,5 @@ def listener(ros_topic):
     rospy.spin()
 
 if __name__ == '__main__':
-    topic = "/vrpn_client_node/fetch_latest/pose"
+    topic = "/vrpn_client_node/RigidBody003/pose"
     listener(topic)

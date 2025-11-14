@@ -1,3 +1,4 @@
 *.env
 *.csv
 build/
+.venv/

@@ -8,7 +8,7 @@ def publish_cmd_vel():
     rate = rospy.Rate(50)  # 3 Hz
 
     msg = Twist()
-    msg.linear.x = -0.2
+    msg.linear.x = 0.2
     msg.linear.y = 0.0
     msg.linear.z = 0.0
     msg.angular.x = 0.0

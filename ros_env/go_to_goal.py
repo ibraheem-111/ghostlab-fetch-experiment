@@ -6,16 +6,16 @@ from geometry_msgs.msg import PoseStamped, Twist
 
 class GoToGoal:
     def __init__(self):
-        rospy.init_node('go_to_goal_controller', anonymous=True)
+        rospy.init_node('go_to_goal_controllerp', anonymous=True)
 
         # Parameters
-        self.target_x = rospy.get_param("~target_x", -3.0)   # meters
+        self.target_x = rospy.get_param("~target_x", -1.0)   # meters
         self.target_y = rospy.get_param("~target_y", 1.0)
         self.linear_k = rospy.get_param("~linear_k", 0.5)
         self.angular_k = rospy.get_param("~angular_k", 1.0)
         self.goal_tolerance = rospy.get_param("~goal_tolerance", 0.05)
 
-        self.pose_sub = rospy.Subscriber("/vrpn_client_node/fetch_latest/pose", PoseStamped, self.pose_callback)
+        self.pose_sub = rospy.Subscriber("/vrpn_client_node/RigidBody004/pose", PoseStamped, self.pose_callback)
         self.cmd_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)
 
         self.current_pose = None
