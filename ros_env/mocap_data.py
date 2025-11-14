@@ -31,11 +31,12 @@ def callback(msg):
 
 def save_to_csv():
     rospy.loginfo("Saving data to CSV...")
-    with open("pose_data.csv", "w") as f:
+    file_name = "pose_data_movement_50Hz.csv"
+    with open(file_name, "w") as f:
         writer = csv.DictWriter(f, fieldnames=["x", "y", "z", "alpha", "beta", "gamma"])
         writer.writeheader()
         writer.writerows(data_list)
-    rospy.loginfo("Saved %d entries to pose_data.csv", len(data_list))
+    rospy.loginfo("Saved {} entries to {}".format(str(len(data_list)), file_name))
     rospy.loginfo("Exiting gracefully.")
 
 def listener(ros_topic):
@@ -46,5 +47,5 @@ def listener(ros_topic):
     rospy.spin()
 
 if __name__ == '__main__':
-    topic = "/vrpn_client_node/FetchMobile/pose"
-    listener()
+    topic = "/vrpn_client_node/fetch_latest/pose"
+    listener(topic)

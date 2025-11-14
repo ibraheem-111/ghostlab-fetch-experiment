@@ -1,4 +1,4 @@
-from cmd_vel import send_vel_comand
+from ros_env.cmd_vel import send_vel_comand
 import time
 
 # while True:
