@@ -3,19 +3,24 @@ import rospy
 import tf
 import math
 from geometry_msgs.msg import PoseStamped, Twist
+import argparse
 
 class GoToGoal:
     def __init__(self):
         rospy.init_node('go_to_goal_controllerp', anonymous=True)
 
         # Parameters
-        self.target_x = rospy.get_param("~target_x", -1.0)   # meters
-        self.target_y = rospy.get_param("~target_y", 1.0)
+        self.target_x = rospy.get_param("~target_x", -1.5)   # meters
+        self.target_y = rospy.get_param("~target_y", -0.5)
         self.linear_k = rospy.get_param("~linear_k", 0.5)
         self.angular_k = rospy.get_param("~angular_k", 1.0)
         self.goal_tolerance = rospy.get_param("~goal_tolerance", 0.05)
+        self.max_x = 2
+        self.min_x = -2
+        self.max_y = 1
+        self.min_y = -1
 
-        self.pose_sub = rospy.Subscriber("/vrpn_client_node/RigidBody004/pose", PoseStamped, self.pose_callback)
+        self.pose_sub = rospy.Subscriber("/vrpn_client_node/fetch/pose", PoseStamped, self.pose_callback)
         self.cmd_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)
 
         self.current_pose = None
@@ -33,13 +38,18 @@ class GoToGoal:
         _, _, yaw = tf.transformations.euler_from_quaternion(quaternion)
         self.current_pose = (pose.position.x, pose.position.y, yaw)
 
-    def control_loop(self):
+    def control_loop(self, target_x, target_y):
         while not rospy.is_shutdown():
             if self.current_pose is None:
                 self.rate.sleep()
                 continue
 
             x, y, yaw = self.current_pose
+            
+            if x >= self.max_x or x <=self.min_x:
+                break
+            if y >= self.max_y or y <=self.min_y:
+                break
 
             # Compute control errors
             dx = self.target_x - x
@@ -62,15 +72,23 @@ class GoToGoal:
                 break
 
             # Limit speeds for safety
-            cmd.linear.x = max(min(cmd.linear.x, 0.4), -0.4)
-            cmd.angular.z = max(min(cmd.angular.z, 1.0), -1.0)
+            cmd.linear.x = max(min(cmd.linear.x, 0.2), -0.2)
+            cmd.angular.z = max(min(cmd.angular.z, 0.2), -0.2)
 
             self.cmd_pub.publish(cmd)
             self.rate.sleep()
 
 if __name__ == '__main__':
     try:
+        
+        parser = argparse.ArgumentParser(
+                    prog='ProgramName',
+                    description='What the program does',
+                    epilog='Text at the bottom of help')
+        
+        x = parser.add_argument("x", required=True)
+        y = parser.add_argument("y", required=True)
         controller = GoToGoal()
-        controller.control_loop()
+        controller.control_loop(x, y)
     except rospy.ROSInterruptException:
         pass
