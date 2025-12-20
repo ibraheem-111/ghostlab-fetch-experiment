@@ -53,5 +53,6 @@ def listener(ros_topic):
     rospy.spin()
 
 if __name__ == '__main__':
-    topic = "/vrpn_client_node/fetch/pose"
-    listener(topic)
+    robot_topic = "/vrpn_client_node/Fetch/pose"
+    human_topic = "/vrpn_client_node/Human/pose"
+    listener(robot_topic)
